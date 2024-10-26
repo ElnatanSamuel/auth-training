@@ -6,6 +6,7 @@
     isAuthenticated,
     accessToken,
     refreshToken,
+    clearAuth,
   } from "../../stores/auth";
 
   let profileData = null;
@@ -23,39 +24,12 @@
       });
       profileData = response.data;
     } catch (err) {
-      if (err.response && err.response.status === 403) {
-        // Token expired, try to refresh
-        try {
-          const refreshResponse = await axios.post(
-            "http://localhost:3000/refresh-token",
-            { token: $refreshToken }
-          );
-          accessToken.set(refreshResponse.data.accessToken);
-          // Retry the profile request
-          const retryResponse = await axios.get(
-            "http://localhost:3000/profile",
-            {
-              headers: {
-                Authorization: `Bearer ${refreshResponse.data.accessToken}`,
-              },
-            }
-          );
-          profileData = retryResponse.data;
-        } catch (refreshErr) {
-          error = "Session expired. Please login again.";
-          isAuthenticated.set(false);
-          goto("/login");
-        }
-      } else {
-        error = "Failed to load profile data";
-      }
+      error = "Failed to load profile data";
     }
   });
 
   function handleLogout() {
-    isAuthenticated.set(false);
-    accessToken.set(null);
-    refreshToken.set(null);
+    clearAuth();
     goto("/login");
   }
 </script>
