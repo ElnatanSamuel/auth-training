@@ -12,10 +12,8 @@ const PORT = process.env.PORT || 3000;
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
-// In-memory user storage (replace with a database in production)
 const users = [];
 
-// Register route
 app.post("/register", async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -27,7 +25,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// Login route
 app.post("/login", async (req, res) => {
   const user = users.find((user) => user.username === req.body.username);
   if (!user) return res.status(400).send("User not found");
@@ -45,7 +42,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Refresh token route
 app.post("/refresh-token", (req, res) => {
   const refreshToken = req.body.token;
   if (!refreshToken) return res.sendStatus(401);
@@ -57,7 +53,6 @@ app.post("/refresh-token", (req, res) => {
   });
 });
 
-// Protected route
 app.get("/profile", authenticateToken, (req, res) => {
   res.json({
     username: req.user.username,
