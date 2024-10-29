@@ -8,7 +8,6 @@ This project demonstrates a simple authentication system using Svelte for the fr
 - JWT-based authentication with access and refresh tokens
 - Protected routes (profile page)
 - Automatic token refresh
-- Responsive design using Tailwind CSS
 
 ## Setup and Running the App
 
@@ -28,7 +27,7 @@ This project demonstrates a simple authentication system using Svelte for the fr
 
 3. Start the server:
    ```
-   nodemon server.js
+   node server.js
    ```
 
 The backend should now be running on `http://localhost:3000`.
